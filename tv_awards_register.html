@@ -202,6 +202,13 @@ select option{background:#1a1a2e;color:#fff;}
   <div><label>Date of Birth</label>
     <input type="date" id="inDob"></div>
 
+  <div><label>Gender</label>
+    <select id="inGender">
+      <option value="" disabled selected>Select gender…</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select></div>
+
   <div><label>School</label>
     <input type="text" id="inSchool" placeholder="e.g. Accra Academy SHS" maxlength="80"></div>
 
@@ -383,7 +390,7 @@ var APP_SECRET = 'ctva2026-secure-x7k9m';
 
 // Cadet Media Ghana's WhatsApp number in international format, no + or spaces
 // e.g. Ghana number 024 000 0000 becomes 233240000000
-var CMG_WHATSAPP_NUMBER = 'PASTE_WHATSAPP_NUMBER_HERE';
+var CMG_WHATSAPP_NUMBER = '233598450508';
 
 // ══════════════════════════════════════
 //  BANNER SLIDESHOW — cross-fades between the promo images every 4s.
@@ -487,6 +494,7 @@ function levelFromGrade(grade) {
 function goToReview() {
   var studentName  = document.getElementById('inStudentName').value.trim();
   var dob          = document.getElementById('inDob').value;
+  var gender       = document.getElementById('inGender').value;
   var grade        = document.getElementById('inGrade').value;
   var level        = levelFromGrade(grade);
   var school       = document.getElementById('inSchool').value.trim();
@@ -501,6 +509,7 @@ function goToReview() {
 
   if (!studentName)  { showErr('Please enter the student\'s full name.'); return; }
   if (!dob)            { showErr('Please enter the student\'s date of birth.'); return; }
+  if (!gender)         { showErr('Please select the student\'s gender.'); return; }
   if (!grade)          { showErr('Please select the student\'s grade.'); return; }
   if (!school)        { showErr('Please enter the school.'); return; }
   if (!region)         { showErr('Please select the school\'s region.'); return; }
@@ -515,6 +524,7 @@ function goToReview() {
     ref: makeRefCode(studentName),
     studentName: studentName,
     dob: dob,
+    gender: gender,
     level: level,
     grade: grade,
     school: school,
@@ -539,6 +549,7 @@ function renderReview() {
   var rows = [
     ['Student Name', r.studentName],
     ['Date of Birth', r.dob],
+    ['Gender', r.gender],
     ['School', r.school],
     ['Region', r.region],
     ['Grade', r.grade],
@@ -579,6 +590,7 @@ function confirmAndSubmit() {
     ref: r.ref,
     studentName: r.studentName,
     dob: r.dob,
+    gender: r.gender,
     level: r.level,
     school: r.school,
     region: r.region,
@@ -634,6 +646,7 @@ function finishRegistration(studentName, refCode) {
     ref: refCode,
     studentName: studentName,
     dob: r.dob,
+    gender: r.gender,
     level: r.level,
     school: r.school,
     region: r.region,
@@ -669,6 +682,7 @@ function sendWhatsAppConfirmation() {
     'Reference: ' + r.ref + '\n' +
     'Student: ' + r.studentName + '\n' +
     'Date of Birth: ' + r.dob + '\n' +
+    'Gender: ' + r.gender + '\n' +
     'Level: ' + r.level + '\n' +
     'School: ' + r.school + '\n' +
     'Region: ' + r.region + '\n' +
@@ -679,7 +693,7 @@ function sendWhatsAppConfirmation() {
     (r.parentEmail ? ('Parent Email: ' + r.parentEmail + '\n') : '') +
     'Consent given: Yes';
 
-  var url = 'https://wa.me/' + 233598450508 + '?text=' + encodeURIComponent(text);
+  var url = 'https://wa.me/' + CMG_WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
   window.open(url, '_blank');
 }
 </script>
