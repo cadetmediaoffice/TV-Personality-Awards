@@ -374,12 +374,12 @@ select option{background:#1a1a2e;color:#fff;}
 //  Replace with your deployed Google Apps Script Web App URL
 //  (bound to the Google Sheet that should collect registrations).
 // ══════════════════════════════════════
-var APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfTkqqjtjXLXekfT-fODrdU-F3SzroDSCogLnOcICh1ImtKeLKFJK7Xb6f2K4jsQ0/exec';
 
 // Must match SHARED_SECRET in the Apps Script backend exactly.
 // This is visible to anyone who views the page source — it isn't a real
 // secret, just a filter against generic bots that don't inspect the page.
-var APP_SECRET = 'CHANGE_ME_TO_A_RANDOM_STRING';
+var APP_SECRET = 'ctva2026-secure-x7k9m';
 
 // Cadet Media Ghana's WhatsApp number in international format, no + or spaces
 // e.g. Ghana number 024 000 0000 becomes 233240000000
@@ -679,7 +679,7 @@ function sendWhatsAppConfirmation() {
     (r.parentEmail ? ('Parent Email: ' + r.parentEmail + '\n') : '') +
     'Consent given: Yes';
 
-  var url = 'https://wa.me/' + CMG_WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
+  var url = 'https://wa.me/' + 233598450508 + '?text=' + encodeURIComponent(text);
   window.open(url, '_blank');
 }
 </script>
