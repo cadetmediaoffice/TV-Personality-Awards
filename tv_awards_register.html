@@ -3,7 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <title>Register — Cadet TV Personality Awards 2026 | Cadet Media Ghana</title>
-<link rel="icon" type="image/x-icon" href="MEDIA/favicon.ico">
+<meta name="description" content="Register your child/ward for the Cadet TV Personality Awards 2026 — a youth programme developing confidence, communication skills and talent.">
+
+<!-- ══════════════════════════════════════
+  WHATSAPP / FACEBOOK / TWITTER LINK PREVIEW (Open Graph tags)
+  IMPORTANT: og:image and og:url below MUST be full, absolute URLs
+  (starting with https://) once this page is hosted — WhatsApp cannot
+  fetch a relative path like "og_image.jpg". Replace the two
+  PASTE_YOUR_SITE_URL placeholders below with your real hosted URL,
+  e.g. https://yoursite.com/tv_awards_register.html
+═══════════════════════════════════════ -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cadet TV Personality Awards 2026 — Register Now">
+<meta property="og:description" content="Discover • Develop • Showcase • Celebrate. Register your child/ward for the Cadet TV Personality Awards 2026.">
+<meta property="og:image" content="https://cadetmediaoffice.github.io/TV-Personality-Awards/og_image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://cadetmediaoffice.github.io/TV-Personality-Awards/tv_awards_register.html">
+<meta property="og:site_name" content="Cadet Media Ghana">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cadet TV Personality Awards 2026 — Register Now">
+<meta name="twitter:description" content="Discover • Develop • Showcase • Celebrate. Register your child/ward today.">
+<meta name="twitter:image" content="https://cadetmediaoffice.github.io/TV-Personality-Awards/og_image.jpg">
+
+<!-- ══════════════════════════════════════
+  "ADD TO HOME SCREEN" — lets parents tap Share → Add to Home Screen
+  on their phone and get an app-like icon, without needing a real app.
+═══════════════════════════════════════ -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f3460">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CTVA 2026">
+<link rel="apple-touch-icon" href="logo_quiz.png">
+<link rel="icon" type="image/png" href="logo_quiz.png">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -112,22 +146,22 @@ select option{background:#1a1a2e;color:#fff;}
 
 <div class="page-layout">
 <div class="left-col">
-<img src="MEDIA/logo_quiz.png" alt="Cadet Media Ghana" class="logo">
+<img src="logo_quiz.png" alt="Cadet Media Ghana" class="logo">
 <div class="banner-slideshow" id="bannerSlideshow">
-  <img src="MEDIA/tv_awards_banner.png" alt="Cadet TV Personality Awards 2026" class="slide active">
-  <img src="MEDIA/prizes_2025.jpg" alt="Cadet TV Personality Awards Prizes" class="slide">
-  <img src="MEDIA/event_01.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_02.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_03.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_04.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_05.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_06.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_07.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_08.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_09.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_10.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/event_11.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
-  <img src="MEDIA/sponsors_strip.jpg" alt="Media Partners and Sponsors" class="slide">
+  <img src="tv_awards_banner.png" alt="Cadet TV Personality Awards 2026" class="slide active">
+  <img src="prizes_2025.jpg" alt="Cadet TV Personality Awards Prizes" class="slide">
+  <img src="event_01.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_02.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_03.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_04.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_05.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_06.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_07.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_08.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_09.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_10.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_11.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="sponsors_strip.jpg" alt="Media Partners and Sponsors" class="slide">
 </div>
 
 <button type="button" onclick="var p=document.getElementById('prizesBox'); var open=p.style.display==='flex'; p.style.display= open ? 'none' : 'flex'; this.textContent = open ? '🏆 See Last Year\'s Awards' : '🔼 Hide';" style="
@@ -136,7 +170,7 @@ select option{background:#1a1a2e;color:#fff;}
   🏆 See Last Year's Awards
 </button>
 <div id="prizesBox" style="display:none;flex-direction:column;align-items:center;margin-bottom:16px;">
-  <img src="MEDIA/prizes_2025.jpg" alt="Cadet TV Personality Awards 2025 Prizes" class="prizes-strip">
+  <img src="prizes_2025.jpg" alt="Cadet TV Personality Awards 2025 Prizes" class="prizes-strip">
   <p style="font-size:11px;opacity:.5;text-align:center;margin-top:8px;max-width:400px;">
     Prizes shown are from the 2025 edition. 2026 prizes will be announced closer to the event.
   </p>
@@ -330,7 +364,7 @@ select option{background:#1a1a2e;color:#fff;}
   <button class="btn" onclick="location.reload()">Register Another Student</button>
 </div>
 
-<img src="MEDIA/sponsors_strip.jpg" alt="Media Partners and Sponsors" class="sponsors-strip">
+<img src="sponsors_strip.jpg" alt="Media Partners and Sponsors" class="sponsors-strip">
 </div>
 </div>
 
