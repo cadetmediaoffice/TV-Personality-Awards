@@ -148,8 +148,13 @@ select option{background:#1a1a2e;color:#fff;}
 <div class="left-col">
 <img src="logo_quiz.png" alt="Cadet Media Ghana" class="logo">
 <div class="banner-slideshow" id="bannerSlideshow">
-  <img src="tv_awards_banner.png" alt="Cadet TV Personality Awards 2026" class="slide active">
-  <img src="prizes_2025.jpg" alt="Cadet TV Personality Awards Prizes" class="slide">
+  <img src="og_image.jpg" alt="Cadet TV Personality Awards 2026" class="slide active">
+  <img src="event_16.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_14.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_19.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_20.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_25.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="tv_awards_banner.png" alt="Cadet TV Personality Awards 2026" class="slide">
   <img src="event_01.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
   <img src="event_02.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
   <img src="event_03.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
@@ -161,6 +166,22 @@ select option{background:#1a1a2e;color:#fff;}
   <img src="event_09.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
   <img src="event_10.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
   <img src="event_11.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_12.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_13.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_15.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_17.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_18.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_21.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_22.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_23.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_24.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_26.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_27.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_28.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_29.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_30.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="event_31.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
+  <img src="prizes_2025.jpg" alt="Cadet TV Personality Awards Prizes" class="slide">
   <img src="sponsors_strip.jpg" alt="Media Partners and Sponsors" class="slide">
 </div>
 
@@ -381,19 +402,19 @@ select option{background:#1a1a2e;color:#fff;}
 //  Replace with your deployed Google Apps Script Web App URL
 //  (bound to the Google Sheet that should collect registrations).
 // ══════════════════════════════════════
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfTkqqjtjXLXekfT-fODrdU-F3SzroDSCogLnOcICh1ImtKeLKFJK7Xb6f2K4jsQ0/exec';
+var APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
 // Must match SHARED_SECRET in the Apps Script backend exactly.
 // This is visible to anyone who views the page source — it isn't a real
 // secret, just a filter against generic bots that don't inspect the page.
-var APP_SECRET = 'ctva2026-secure-x7k9m';
+var APP_SECRET = 'CHANGE_ME_TO_A_RANDOM_STRING';
 
 // Cadet Media Ghana's WhatsApp number in international format, no + or spaces
 // e.g. Ghana number 024 000 0000 becomes 233240000000
-var CMG_WHATSAPP_NUMBER = '233598450508';
+var CMG_WHATSAPP_NUMBER = 'PASTE_WHATSAPP_NUMBER_HERE';
 
 // ══════════════════════════════════════
-//  BANNER SLIDESHOW — cross-fades between the promo images every 4s.
+//  BANNER SLIDESHOW — cross-fades between the promo images every 3s.
 // ══════════════════════════════════════
 (function initBannerSlideshow() {
   var slides = document.querySelectorAll('#bannerSlideshow .slide');
@@ -403,7 +424,7 @@ var CMG_WHATSAPP_NUMBER = '233598450508';
     slides[current].classList.remove('active');
     current = (current + 1) % slides.length;
     slides[current].classList.add('active');
-  }, 4000);
+  }, 3000);
 })();
 
 function showErr(msg) {
