@@ -416,6 +416,27 @@ var CMG_WHATSAPP_NUMBER = 'PASTE_WHATSAPP_NUMBER_HERE';
 // ══════════════════════════════════════
 //  BANNER SLIDESHOW — cross-fades between the promo images every 3s.
 // ══════════════════════════════════════
+// ══════════════════════════════════════
+//  VISIT LOGGING — fires once per page load, fire-and-forget. Logs a
+//  timestamp to the "Visits" tab in your Google Sheet so you can see how
+//  many people opened the page. No personal data is sent.
+// ══════════════════════════════════════
+(function logPageVisit() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) return;
+  try {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'logVisit',
+        secret: APP_SECRET,
+        page: 'tv_awards_register.html',
+        deviceInfo: navigator.userAgent.slice(0, 150)
+      })
+    }).catch(function() { /* ignore failures — never block the page */ });
+  } catch (e) { /* ignore */ }
+})();
+
 (function initBannerSlideshow() {
   var slides = document.querySelectorAll('#bannerSlideshow .slide');
   if (!slides.length) return;
