@@ -147,6 +147,18 @@ select option{background:#1a1a2e;color:#fff;}
 <div class="page-layout">
 <div class="left-col">
 <img src="logo_quiz.png" alt="Cadet Media Ghana" class="logo">
+<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px;">
+<div id="visitCounterBadge" style="display:none;padding:6px 16px;border-radius:30px;
+  background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);color:#FFD700;
+  font-size:12.5px;font-weight:bold;">
+  👀 <span id="visitCounterNumber">0</span> people have visited this page
+</div>
+<div id="liveViewersBadge" style="display:none;padding:6px 16px;border-radius:30px;
+  background:rgba(0,220,120,0.08);border:1px solid rgba(0,220,120,0.3);color:#4ade80;
+  font-size:12.5px;font-weight:bold;">
+  🟢 <span id="liveViewersNumber">0</span> viewing now
+</div>
+</div>
 <div class="banner-slideshow" id="bannerSlideshow">
   <img src="og_image.jpg" alt="Cadet TV Personality Awards 2026" class="slide active">
   <img src="event_16.jpg" alt="Cadet TV Personality Awards 2025 highlight" class="slide">
@@ -418,23 +430,91 @@ var CMG_WHATSAPP_NUMBER = 'PASTE_WHATSAPP_NUMBER_HERE';
 // ══════════════════════════════════════
 // ══════════════════════════════════════
 //  VISIT LOGGING — fires once per page load, fire-and-forget. Logs a
-//  timestamp to the "Visits" tab in your Google Sheet so you can see how
-//  many people opened the page. No personal data is sent.
+//  timestamp plus an approximate location (city/region/country, derived
+//  from IP address — the same general-purpose lookup most websites use
+//  for basic analytics) to the "Visits" tab in your Google Sheet. No
+//  name, email, or other personal data is sent. The backend replies with
+//  the running total, which is then shown in the visible counter badge.
 // ══════════════════════════════════════
 (function logPageVisit() {
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) return;
-  try {
+
+  function showCounter(total) {
+    if (typeof total !== 'number') return;
+    var badge = document.getElementById('visitCounterBadge');
+    var num = document.getElementById('visitCounterNumber');
+    if (!badge || !num) return;
+    num.textContent = total.toLocaleString();
+    badge.style.display = 'inline-block';
+  }
+
+  function sendVisit(location) {
+    try {
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'logVisit',
+          secret: APP_SECRET,
+          page: 'tv_awards_register.html',
+          deviceInfo: navigator.userAgent.slice(0, 150),
+          location: location || 'Unknown'
+        })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) { if (data && data.status === 'ok') showCounter(data.total); })
+        .catch(function() { /* ignore failures — never block the page */ });
+    } catch (e) { /* ignore */ }
+  }
+
+  // Best-effort IP-based location lookup. If it fails or times out
+  // (ad blockers, offline, etc.), we still log the visit with "Unknown".
+  fetch('https://ipwho.is/', { signal: AbortSignal.timeout ? AbortSignal.timeout(3000) : undefined })
+    .then(function(r) { return r.json(); })
+    .then(function(geo) {
+      var parts = [geo.city, geo.region, geo.country].filter(Boolean);
+      sendVisit(parts.join(', '));
+    })
+    .catch(function() { sendVisit('Unknown'); });
+})();
+
+// ══════════════════════════════════════
+//  LIVE "CURRENTLY VIEWING" COUNT — sends a small heartbeat ping every
+//  20s with a random per-tab session ID (not tied to any identity).
+//  The backend tracks who's pinged recently and replies with how many
+//  are active right now, shown in the green "viewing now" badge.
+// ══════════════════════════════════════
+(function initLiveViewerCount() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) return;
+
+  var sessionId = sessionStorage.getItem('ctvaSessionId');
+  if (!sessionId) {
+    sessionId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(36).slice(2)));
+    sessionStorage.setItem('ctvaSessionId', sessionId);
+  }
+
+  function sendHeartbeat() {
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({
-        action: 'logVisit',
-        secret: APP_SECRET,
-        page: 'tv_awards_register.html',
-        deviceInfo: navigator.userAgent.slice(0, 150)
+      body: JSON.stringify({ action: 'heartbeat', secret: APP_SECRET, sessionId: sessionId })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.status === 'ok' && typeof data.activeNow === 'number') {
+          var badge = document.getElementById('liveViewersBadge');
+          var num = document.getElementById('liveViewersNumber');
+          if (badge && num) {
+            num.textContent = data.activeNow.toLocaleString();
+            badge.style.display = 'inline-block';
+          }
+        }
       })
-    }).catch(function() { /* ignore failures — never block the page */ });
-  } catch (e) { /* ignore */ }
+      .catch(function() { /* ignore — never block the page */ });
+  }
+
+  sendHeartbeat();
+  setInterval(sendHeartbeat, 20000);
 })();
 
 (function initBannerSlideshow() {
