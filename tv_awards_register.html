@@ -138,6 +138,34 @@ select option{background:#1a1a2e;color:#fff;}
 }
 .ref-box .ref-code{font-family:monospace;font-size:18px;letter-spacing:2px;color:#FFD700;font-weight:bold;margin-top:4px;}
 
+
+/* Already registered? — find my voting code */
+.find-card{background:rgba(255,215,0,0.07);border:1.5px solid rgba(255,215,0,0.35);border-radius:16px;width:100%;max-width:440px;margin-bottom:16px;overflow:hidden;}
+.find-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;background:none;border:none;color:#FFD700;font-size:14.5px;font-weight:bold;cursor:pointer;text-align:left;font-family:inherit;}
+.find-toggle small{display:block;font-weight:normal;color:#fff;opacity:.7;font-size:12px;margin-top:2px;}
+.find-body{display:none;padding:0 18px 18px;}
+.find-card.open .find-body{display:block;}
+.find-card.open .find-arrow{transform:rotate(180deg);}
+.find-arrow{transition:transform .2s;}
+.find-row{display:flex;gap:8px;}
+.find-row input{flex:1;min-width:0;text-transform:uppercase;}
+.find-row .btn{padding:0 18px;font-size:14px;}
+.find-msg{margin-top:10px;font-size:13px;line-height:1.6;}
+.find-msg.err{display:block;background:rgba(220,50,50,0.15);border:1px solid rgba(220,50,50,0.4);border-radius:8px;padding:10px 14px;color:#ff9090;text-align:center;}
+.find-result{margin-top:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px;text-align:center;}
+.find-result .who{display:flex;align-items:center;gap:12px;text-align:left;margin-bottom:12px;}
+.find-result .who img,.find-result .who .ph{width:54px;height:54px;border-radius:10px;object-fit:cover;background:rgba(255,255,255,0.1);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+.find-result .nm{font-weight:bold;font-size:15px;}
+.find-result .mt{font-size:12px;opacity:.65;margin-top:2px;}
+.find-code{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.45);border-radius:12px;padding:12px;}
+.find-code .lbl{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.find-code .val{font-size:34px;font-weight:900;color:#FFD700;letter-spacing:2px;line-height:1.2;font-family:Arial,sans-serif;}
+.find-code .how{font-size:12.5px;opacity:.85;margin-top:2px;}
+.find-pill{display:inline-block;font-size:10.5px;font-weight:bold;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;margin-bottom:10px;}
+.find-pill.approved{background:rgba(0,230,118,.15);color:#00e676;}
+.find-pill.pending{background:rgba(255,215,0,.15);color:#FFD700;}
+.find-pill.rejected{background:rgba(255,82,82,.15);color:#ff8080;}
+
 @media (max-width: 380px) {
   .logo{width:80px;height:80px;}
   .banner{max-width:300px;}
@@ -213,6 +241,23 @@ select option{background:#1a1a2e;color:#fff;}
 </div>
 
 <div class="right-col">
+<!-- ═══════════ ALREADY REGISTERED? FIND MY VOTING CODE ═══════════ -->
+<div class="find-card" id="findCard">
+  <button type="button" class="find-toggle" id="findToggle" aria-expanded="false">
+    <span>🔎 Already registered? Find your voting code
+      <small>Enter your registration reference to see your code</small></span>
+    <span class="find-arrow">▼</span>
+  </button>
+  <div class="find-body">
+    <div class="find-row">
+      <input type="text" id="findRef" placeholder="e.g. CTVA-2026-KD-523051" maxlength="40" autocomplete="off" autocapitalize="characters">
+      <button type="button" class="btn" id="findBtn">Find</button>
+    </div>
+    <div class="find-msg" id="findMsg"></div>
+    <div id="findResult"></div>
+  </div>
+</div>
+
 <!-- ═══════════ REGISTRATION FORM ═══════════ -->
 <div class="card" id="regCard">
   <h2>🎬 Cadet TV Personality Awards 2026</h2>
@@ -530,6 +575,64 @@ var CMG_WHATSAPP_NUMBER = 'PASTE_WHATSAPP_NUMBER_HERE';
     current = (current + 1) % slides.length;
     slides[current].classList.add('active');
   }, 3000);
+})();
+
+// ══════════════════════════════════════
+//  FIND MY VOTING CODE — a student who already registered enters the
+//  reference they received (e.g. CTVA-2026-KD-523051) and sees their
+//  name, category and Nalo voting code once approved.
+// ══════════════════════════════════════
+(function initFindCode() {
+  var card = document.getElementById('findCard');
+  var toggle = document.getElementById('findToggle');
+  var input = document.getElementById('findRef');
+  var btn = document.getElementById('findBtn');
+  var msg = document.getElementById('findMsg');
+  var out = document.getElementById('findResult');
+  if (!card) return;
+
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function(c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function setMsg(text, isErr) { msg.textContent = text || ''; msg.className = 'find-msg' + (isErr ? ' err' : ''); msg.style.display = text ? 'block' : 'none'; }
+
+  toggle.addEventListener('click', function() {
+    var open = card.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) setTimeout(function() { input.focus(); }, 50);
+  });
+  input.addEventListener('keydown', function(e) { if (e.key === 'Enter') btn.click(); });
+
+  btn.addEventListener('click', function() {
+    var ref = input.value.replace(/\s+/g, '').toUpperCase();
+    out.innerHTML = '';
+    if (!ref) { setMsg('Please type your registration reference.', true); return; }
+    if (!/^CTVA-\d{4}-[A-Z0-9]{1,6}-\d{4,8}$/.test(ref)) { setMsg('That doesn\'t look like a reference. It looks like CTVA-2026-KD-523051.', true); return; }
+    btn.disabled = true; setMsg('⏳ Searching…', false);
+
+    fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'getMyResult', ref: ref }) })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        btn.disabled = false;
+        var n = d;
+        if (!d || d.status !== 'ok' || !n.name) { setMsg((d && d.message) || 'No registration found for that reference. Check it and try again, or ask your school.', true); return; }
+        setMsg('', false);
+        var status = String(n.regStatus || 'pending').toLowerCase();
+        if (status === 'approve' || status === 'accepted') status = 'approved';
+        var photo = n.photoUrl
+          ? '<img src="' + esc(n.photoUrl) + '" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML=\'<div class=&quot;ph&quot;>' + esc((n.name || '?').charAt(0).toUpperCase()) + '</div>\'">'
+          : '<div class="ph">' + esc((n.name || '?').charAt(0).toUpperCase()) + '</div>';
+        var codeBox;
+        if (status === 'rejected') {
+          codeBox = '<div class="find-msg" style="margin:0;">This registration was not accepted. Please contact Cadet Media Ghana.</div>';
+        } else if (n.naloCode) {
+          codeBox = '<div class="find-code"><div class="lbl">Your voting code</div><div class="val">' + esc(n.naloCode) + '</div><div class="how">Dial <b>*920*5#</b> and enter this code to vote.</div></div>';
+        } else {
+          codeBox = '<div class="find-code"><div class="lbl">Your voting code</div><div class="how" style="margin-top:6px;">Not assigned yet. Please check again soon — it appears once your registration is approved.</div></div>';
+        }
+        out.innerHTML = '<div class="find-result"><span class="find-pill ' + esc(status) + '">' + esc(status) + '</span>' +
+          '<div class="who">' + photo + '<div><div class="nm">' + esc(n.name) + '</div><div class="mt">' + esc(n.category || '') + (n.school ? ' · ' + esc(n.school) : '') + '</div></div></div>' + codeBox + '</div>';
+      })
+      .catch(function() { btn.disabled = false; setMsg('Network error. Please check your connection and try again.', true); });
+  });
 })();
 
 function showErr(msg) {
